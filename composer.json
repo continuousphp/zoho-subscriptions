@@ -1,5 +1,5 @@
 {
-  "name": "zoho-api/zoho-subscriptions",
+  "name": "continuousphp/zoho-subscriptions",
   "description": "ZF2 module to interact with Zoho Subscriptions API",
   "keywords": [
     "zoho", "subscription", "plan", "api", "rest"
