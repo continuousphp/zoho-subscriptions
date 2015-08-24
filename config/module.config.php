@@ -677,7 +677,6 @@ return [
 
         ]
     ],
-
     'router' =>
         [
             'routes' =>
