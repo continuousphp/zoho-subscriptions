@@ -13,8 +13,6 @@ return [
             'Zoho\Subscriptions\Factory\ResourceAbstractFactory'
         ],
     ],
-
-
     'zoho' => [
         'ssl_config' => [
             'sslcapath' => '/etc/ssl/certs'
