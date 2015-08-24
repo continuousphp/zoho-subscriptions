@@ -686,7 +686,7 @@ return [
                             'type' => 'literal',
                             'options' =>
                                 [
-                                    'route' => '/webhooks'
+                                    'route' => '/zoho-subscriptions/webhooks'
                                 ],
                             'child_routes' =>
                                 [
