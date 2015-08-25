@@ -5,6 +5,13 @@
  */
 
 return [
+    'controllers' =>
+        [
+            'invokables' =>
+                [
+                    'Zoho\Subscriptions\Controller\Webhook\Subscription' => 'Zoho\Subscriptions\Controller\Webhook\SubscriptionController'
+                ]
+        ],
     'service_manager' => [
         'invokables' => [
             'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy' => 'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy',
@@ -681,57 +688,67 @@ return [
         [
             'routes' =>
                 [
-                    'webhook' =>
+                    'zoho-subscription' =>
                         [
                             'type' => 'literal',
                             'options' =>
                                 [
-                                    'route' => '/zoho-subscriptions/webhooks'
+                                    'route' => '/zoho-subscriptions'
                                 ],
                             'child_routes' =>
                                 [
-                                    'subscription' =>
+                                    'webhook' =>
                                         [
                                             'type' => 'literal',
                                             'options' =>
                                                 [
-                                                    'route' => '/subscriptions',
-                                                    'defaults' =>
-                                                        [
-                                                            '__NAMESPACE__' => 'Zoho\Webhook',
-                                                            'controller' => 'subscription',
-                                                            'action' => 'callback'
-                                                        ]
-                                                ]
-                                        ],
-                                    'payment' =>
-                                        [
-                                            'type' => 'literal',
-                                            'options' =>
+                                                    'route' => '/webhooks'
+                                                ],
+                                            'child_routes' =>
                                                 [
-                                                    'route' => '/payments',
-                                                    'defaults' =>
+                                                    'subscription' =>
                                                         [
-                                                            '__NAMESPACE__' => 'Zoho\Webhook',
-                                                            'controller' => 'payment',
-                                                            'action' => 'callback'
-                                                        ]
-                                                ]
-                                        ],
-                                    'invoice' =>
-                                        [
-                                            'type' => 'literal',
-                                            'options' =>
-                                                [
-                                                    'route' => '/invoices',
-                                                    'defaults' =>
+                                                            'type' => 'literal',
+                                                            'options' =>
+                                                                [
+                                                                    'route' => '/subscriptions',
+                                                                    'defaults' =>
+                                                                        [
+                                                                            'controller' => 'Zoho\Subscriptions\Controller\Webhook\Subscription',
+                                                                            'action' => 'callback'
+                                                                        ]
+                                                                ]
+                                                        ],
+                                                    'payment' =>
                                                         [
-                                                            '__NAMESPACE__' => 'Zoho\Webhook',
-                                                            'controller' => 'invoice',
-                                                            'action' => 'callback'
-                                                        ]
+                                                            'type' => 'literal',
+                                                            'options' =>
+                                                                [
+                                                                    'route' => '/payments',
+                                                                    'defaults' =>
+                                                                        [
+                                                                            '__NAMESPACE__' => 'Zoho\Webhook',
+                                                                            'controller' => 'payment',
+                                                                            'action' => 'callback'
+                                                                        ]
+                                                                ]
+                                                        ],
+                                                    'invoice' =>
+                                                        [
+                                                            'type' => 'literal',
+                                                            'options' =>
+                                                                [
+                                                                    'route' => '/invoices',
+                                                                    'defaults' =>
+                                                                        [
+                                                                            '__NAMESPACE__' => 'Zoho\Webhook',
+                                                                            'controller' => 'invoice',
+                                                                            'action' => 'callback'
+                                                                        ]
+                                                                ]
+                                                        ],
                                                 ]
-                                        ],
+                                        ]
                                 ]
                         ]
                 ]

@@ -4,7 +4,7 @@
  * @copyright Copyright (c) 2015 Julien Guittard (http://julienguittard.com)
  */
 
-namespace Zoho\Webhook;
+namespace Zoho\Subscriptions\Controller\Webhook;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Json\Json;
