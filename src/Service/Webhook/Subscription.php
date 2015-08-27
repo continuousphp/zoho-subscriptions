@@ -33,6 +33,13 @@ class Subscription implements ServiceLocatorAwareInterface, EventManagerAwareInt
     use ServiceLocatorAwareTrait;
     use EventManagerAwareTrait;
 
+    public function __construct()
+    {
+        $this->getEventManager()->addIdentifiers([
+            'subscriptionWebhook',
+        ]);
+    }
+
     public function triggerSubscriptionEvent(array $payload)
     {
         $response = new Response();
@@ -45,8 +52,7 @@ class Subscription implements ServiceLocatorAwareInterface, EventManagerAwareInt
 
         switch ($payload['event_type']) {
             case 'subscription_created':
-                error_log('sub created');
-                $this->getEventManager()->trigger('subscriptionCreated', ['subscription' => $payload['data']['subscription']]);
+                $this->getEventManager()->trigger('subscriptionCreated', $this, ['subscription' => $payload['data']['subscription']]);
                 break;
             default:
                 $response->setStatusCode(400)
