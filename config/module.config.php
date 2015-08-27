@@ -15,6 +15,7 @@ return [
     'service_manager' => [
         'invokables' => [
             'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy' => 'Zoho\Subscriptions\Hydrator\Strategy\AddressStrategy',
+            'Zoho\Subscriptions\Service\Webhook\Subscription' => 'Zoho\Subscriptions\Service\Webhook\Subscription'
         ],
         'abstract_factories' => [
             'Zoho\Subscriptions\Factory\ResourceAbstractFactory'
