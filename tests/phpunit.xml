@@ -1,0 +1,28 @@
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="Bootstrap.php"
+         cacheTokens="true"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         mapTestClassNameToCoveredClassName="false"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         verbose="true">
+    <testsuites>
+        <testsuite name="Zoho Subscriptions test suite">
+            <directory>ZohoTest</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
