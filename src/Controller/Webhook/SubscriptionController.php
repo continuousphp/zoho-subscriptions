@@ -38,9 +38,9 @@ class SubscriptionController extends AbstractActionController
 
         $data = Json::decode(urldecode($payload), Json::TYPE_ARRAY);
 
-        //error_log(var_export($data, true));
-
-
+        /** @var \Zoho\Subscriptions\Service\Webhook\Subscription $serviceWebhook */
+        $serviceWebhook = $this->getServiceLocator()->get('Zoho\Subscriptions\Service\Webhook\Subscription');
+        $serviceWebhook->triggerSubscriptionEvent($data);
 
         return new JsonModel();
     }
