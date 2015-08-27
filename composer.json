@@ -16,6 +16,7 @@
     }
   ],
   "require": {
+    "zendframework/zendframework": "~2.4",
     "zendframework/zend-inputfilter": "~2.4",
     "zendframework/zend-i18n": "~2.4",
     "zendframework/zend-servicemanager": "~2.4",
