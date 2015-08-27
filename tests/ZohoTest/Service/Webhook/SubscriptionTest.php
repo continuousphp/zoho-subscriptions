@@ -130,6 +130,16 @@ class SubscriptionTest extends TestCase
         $this->assertEquals(400, $response->getStatusCode());
     }
 
+    public function testTriggerSubscriptionEvent_InvalidEventType()
+    {
+        $this->subscriptionData['event_type'] = 'invalid_event';
+
+        $response = $this->instance->triggerSubscriptionEvent($this->subscriptionData);
+
+        $this->assertInstanceOf('\Zend\Http\PhpEnvironment\Response', $response);
+        $this->assertEquals(400, $response->getStatusCode());
+    }
+
     public function testTriggerSubscriptionEvent_SubscriptionCreated()
     {
         $eventTriggered = false;
