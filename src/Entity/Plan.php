@@ -100,6 +100,11 @@ class Plan implements EntityInterface
     protected $taxId;
 
     /**
+     * @var int
+     */
+    protected $quantity;
+
+    /**
      * Get the plan code
      *
      * @return string
@@ -338,6 +343,23 @@ class Plan implements EntityInterface
     public function setTaxId($taxId)
     {
         $this->taxId = $taxId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
         return $this;
     }
 }
