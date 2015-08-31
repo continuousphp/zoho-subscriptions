@@ -33,6 +33,15 @@ class SubscriptionController extends AbstractActionController
     {
         $payload = file_get_contents("php://input");
 
+        $accessToken = $this->params()->fromQuery('access_token');
+
+        if ($accessToken !== $this->getServiceLocator()->get('config')['zoho']['webhook_access_token']) {
+            $response = new Response();
+            $response->setStatusCode(403)
+                     ->setContent('Invalid access token.');
+            return $response;
+        }
+
         if (substr($payload, 0, 8) === 'payload=') {
             $payload = substr($payload, 8);
         }
