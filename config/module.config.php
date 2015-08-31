@@ -22,6 +22,7 @@ return [
         ],
     ],
     'zoho' => [
+        'webhook_access_token' => 'xd1ze61fefa3f1afvaz5v1gvzagv321za56f1zaf',
         'ssl_config' => [
             'sslcapath' => '/etc/ssl/certs'
         ],

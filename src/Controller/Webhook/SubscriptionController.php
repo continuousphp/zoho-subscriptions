@@ -12,6 +12,7 @@
 
 namespace Zoho\Subscriptions\Controller\Webhook;
 
+use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Json\Json;
 use Zend\View\Model\JsonModel;
@@ -40,8 +41,15 @@ class SubscriptionController extends AbstractActionController
 
         /** @var \Zoho\Subscriptions\Service\Webhook\Subscription $serviceWebhook */
         $serviceWebhook = $this->getServiceLocator()->get('Zoho\Subscriptions\Service\Webhook\Subscription');
-        $serviceWebhook->triggerSubscriptionEvent($data);
 
-        return new JsonModel();
+        try {
+            $response = $serviceWebhook->triggerSubscriptionEvent($data);
+        } catch (\Exception $e) {
+            $response = new Response();
+            $response->setStatusCode(500)
+                     ->setContent('Unexpected server error.');
+        }
+
+        return $response;
     }
 }

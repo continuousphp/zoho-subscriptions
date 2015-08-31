@@ -59,5 +59,10 @@ class Subscription implements ServiceLocatorAwareInterface, EventManagerAwareInt
                          ->setContent('Invalid event type: ' . $payload['event_type']);
                 return $response;
         }
+
+        $response->setStatusCode(200)
+                 ->setContent('Success.');
+
+        return $response;
     }
 }
