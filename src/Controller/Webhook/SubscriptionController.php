@@ -35,7 +35,7 @@ class SubscriptionController extends AbstractActionController
 
         $zohoConfig = $this->getServiceLocator()->get('config')['zoho'];
 
-        $accessToken = $this->params()->fromQuery('access_token');
+        $accessToken = $this->params()->fromQuery('token');
 
         if (!array_key_exists('webhook_access_token', $zohoConfig) ||
             $accessToken !== $zohoConfig['webhook_access_token'])
