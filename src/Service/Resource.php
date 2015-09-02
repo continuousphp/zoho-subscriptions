@@ -366,15 +366,24 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             $data = ArrayUtils::iteratorToArray($data);
         }
 
-        if (!is_array($data)) {
-            // throw 422
+        $json = json_encode($data);
+
+        if (false === $json) {
+            throw new DomainException("Unprocessable entity", 422);
         }
-        $fields = http_build_query($data);
 
-        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id, 'PUT', $fields);
+        $result = $this->request(self::ZOHO_API_ENDPOINT . $this->getPath() . '/' . $id, 'PUT', $json);
 
-        $entityName = $this->getEntityName();
-        return $result[$entityName];
+        if ($this->getLastResponseHttpCode() == 200) {
+            $entityClass = $this->getEntityClass();
+            $entityName  = $this->getEntityName();
+            $entity = new $entityClass;
+            $data = $result[$entityName];
+            $entity = $this->getHydrator()->hydrate($data, $entity);
+            return $entity;
+        }
+
+        throw new DomainException($result && is_object($result) ? $result->message : "Couldn't update the resource.", $this->getLastResponseHttpCode());
     }
 
     /**
