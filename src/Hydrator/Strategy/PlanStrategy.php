@@ -25,11 +25,13 @@ class PlanStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        if (!is_array($value)) {
-            return $value;
+        if (!$value instanceof PlanEntity) {
+            throw new \InvalidArgumentException('The given value must be a Plan instance.');
         }
+
         $hydrator = new ClassMethods(true);
-        return $hydrator->hydrate($value, new PlanEntity());
+
+        return $hydrator->extract($value);
     }
 
     /**

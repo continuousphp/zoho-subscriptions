@@ -368,6 +368,8 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             $data = ArrayUtils::iteratorToArray($data);
         }
 
+        $data = $this->removeIdleFields($data);
+
         $json = json_encode($data);
 
         if (false === $json) {
@@ -386,6 +388,19 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
         }
 
         throw new DomainException($result && is_object($result) ? $result->message : "Couldn't update the resource.", $this->getLastResponseHttpCode());
+    }
+
+    protected function removeIdleFields(array $data)
+    {
+        foreach (array_keys($data) as $key) {
+            if (is_null($data[$key])) {
+                unset($data[$key]);
+            } else if (is_array($data[$key])) {
+                $data[$key] = $this->removeIdleFields($data[$key]);
+            }
+        }
+
+        return $data;
     }
 
     /**
