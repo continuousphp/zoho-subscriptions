@@ -335,6 +335,8 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             $data = ArrayUtils::iteratorToArray($data);
         }
 
+        $data = $this->removeIdleFields($data);
+
         $json = json_encode($data);
 
         if (false === $json) {

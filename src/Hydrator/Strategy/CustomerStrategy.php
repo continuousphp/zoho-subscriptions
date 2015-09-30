@@ -6,7 +6,6 @@
 
 namespace Zoho\Subscriptions\Hydrator\Strategy;
 
-use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
 use Zoho\Subscriptions\Entity\Customer as CustomerEntity;
 use Zoho\Subscriptions\Hydrator\CustomerHydrator;
@@ -26,11 +25,13 @@ class CustomerStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        if (!is_array($value)) {
-            return $value;
+        if (!$value instanceof CustomerEntity) {
+            throw new \InvalidArgumentException('The given value must be a Customer instance.');
         }
+
         $hydrator = new CustomerHydrator();
-        return $hydrator->hydrate($value, new CustomerEntity());
+
+        return $hydrator->extract($value);
     }
 
     /**
