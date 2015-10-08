@@ -254,13 +254,18 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
 
         if (!$result) {
             throw new Exception(Exception::TYPE_GATEWAY_TIMEOUT, 'Timeout', 'Zoho Subscriptions is currently unreachable.');
-        } else if ($this->getLastResponseHttpCode() == 429) {
-            throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
-        } else if ($this->getLastResponseHttpCode() == 404) {
-            throw new Exception(Exception::TYPE_RESOURCE_NOT_FOUND, 'Not found', 'Resource not found.');
         }
 
         $result = json_decode($result, true);
+
+        if ($this->getLastResponseHttpCode() == 429) {
+            throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
+        } else if ($this->getLastResponseHttpCode() == 404 ||
+                   ($this->getLastResponseHttpCode() == 400 && array_key_exists('code', $result) &&
+                    $result['code'] == 3004))
+        {
+            throw new Exception(Exception::TYPE_RESOURCE_NOT_FOUND, 'Not found', 'Resource not found.');
+        }
 
         curl_close($this->curl);
 
