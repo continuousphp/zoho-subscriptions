@@ -26,6 +26,12 @@ return [
             'sslcapath' => '/etc/ssl/certs'
         ],
         'resources' => [
+            'Zoho\Subscriptions\Resource\Tax' => [
+                'path' => '/settings/taxes',
+                'collectionName' => 'taxes',
+                'entityName' => 'tax',
+                'input-filter' => [],
+            ],
             'Zoho\Subscriptions\Resource\Product' => [
                 'path' => '/products',
                 'collectionName' => 'products',
