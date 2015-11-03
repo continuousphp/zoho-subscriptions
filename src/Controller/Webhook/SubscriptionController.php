@@ -42,6 +42,7 @@ class SubscriptionController extends AbstractActionController
         {
             $response = new Response();
             $response->setStatusCode(403)
+                     ->setReasonPhrase('Invalid access token.')
                      ->setContent('Invalid access token.');
             return $response;
         }
@@ -60,6 +61,7 @@ class SubscriptionController extends AbstractActionController
         } catch (\Exception $e) {
             $response = new Response();
             $response->setStatusCode(500)
+                     ->setReasonPhrase('Unexpected server error.')
                      ->setContent('Unexpected server error.');
         }
 
