@@ -54,6 +54,10 @@ class Subscription implements ServiceLocatorAwareInterface, EventManagerAwareInt
             case 'subscription_created':
                 $this->getEventManager()->trigger('subscriptionCreated', $this, ['subscription' => $payload['data']['subscription']]);
                 break;
+            case 'subscription_upgraded':
+            case 'subscription_downgraded':
+                $this->getEventManager()->trigger('subscriptionUpdated', $this, ['subscription' => $payload['data']['subscription']]);
+                break;
             default:
                 $response->setStatusCode(400)
                          ->setContent('Invalid event type: ' . $payload['event_type']);
