@@ -227,6 +227,15 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
             );
         }
 
+        if (array_key_exists('timeout_milliseconds', $zohoConfig) &&
+            !empty($zohoConfig['timeout_milliseconds']))
+        {
+            curl_setopt(
+                $this->curl, CURLOPT_TIMEOUT_MS,
+                $this->getServiceLocator()->get('config')['zoho']['timeout_milliseconds']
+            );
+        }
+
         curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curl, CURLOPT_HTTPHEADER, [
             'Authorization: Zoho-authtoken ' . $this->getAuthToken(),
@@ -261,10 +270,12 @@ class Resource implements InputFilterAwareInterface, ServiceLocatorAwareInterfac
         if ($this->getLastResponseHttpCode() == 429) {
             throw new Exception(Exception::TYPE_TOO_MANY_REQUESTS, 'Too many Requests', 'Zoho Subscriptions is currently not available because of too many requests.');
         } else if ($this->getLastResponseHttpCode() == 404 ||
-                   ($this->getLastResponseHttpCode() == 400 && array_key_exists('code', $result) &&
-                    $result['code'] == 3004))
+            ($this->getLastResponseHttpCode() == 400 && array_key_exists('code', $result) &&
+                $result['code'] == 3004))
         {
             throw new Exception(Exception::TYPE_RESOURCE_NOT_FOUND, 'Not found', 'Resource not found.');
+        } else if ($this->getLastResponseHttpCode() == 522) {
+            throw new Exception(Exception::TYPE_GATEWAY_TIMEOUT, 'Zoho Timeout', 'Zoho Subscriptions is currently not available.');
         }
 
         curl_close($this->curl);
