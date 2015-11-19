@@ -457,7 +457,7 @@ class Subscription implements EntityInterface
      * @param Coupon $coupon
      * @return Subscription
      */
-    public function setCoupon(Coupon $coupon = null)
+    public function setCoupon($coupon = null)
     {
         $this->coupon = $coupon;
         return $this;
