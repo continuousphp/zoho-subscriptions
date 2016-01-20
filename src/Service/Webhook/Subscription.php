@@ -54,6 +54,9 @@ class Subscription implements ServiceLocatorAwareInterface, EventManagerAwareInt
             case 'subscription_created':
                 $this->getEventManager()->trigger('subscriptionCreated', $this, ['subscription' => $payload['data']['subscription']]);
                 break;
+            case 'subscription_renewed':
+                $this->getEventManager()->trigger('subscriptionRenewed', $this, ['subscription' => $payload['data']['subscription']]);
+                break;
             case 'subscription_upgraded':
             case 'subscription_downgraded':
                 $this->getEventManager()->trigger('subscriptionUpdated', $this, ['subscription' => $payload['data']['subscription']]);

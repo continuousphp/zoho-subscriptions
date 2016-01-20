@@ -409,6 +409,24 @@ class SubscriptionTest extends TestCase
         $this->assertTrue($eventTriggered);
     }
 
+    public function testTriggerSubscriptionEvent_SubscriptionRenewed()
+    {
+        $eventTriggered = false;
+        $subscriptionData = $this->subscriptionDataCreated;
+        $subscriptionData['event_type'] = 'subscription_renewed';
+
+        $this->instance->getEventManager()->getSharedManager()->attach(
+            'subscriptionWebhook', 'subscriptionRenewed', function (\Zend\EventManager\Event $e) use (&$eventTriggered, $subscriptionData)
+        {
+            $eventTriggered = true;
+            $this->assertEquals($e->getParam('subscription'), $subscriptionData['data']['subscription']);
+        });
+
+        $this->instance->triggerSubscriptionEvent($subscriptionData);
+
+        $this->assertTrue($eventTriggered);
+    }
+
     public function testTriggerSubscriptionEvent_SubscriptionUpgraded()
     {
         $eventTriggered = false;
