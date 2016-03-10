@@ -16,13 +16,13 @@
     }
   ],
   "require": {
-    "zendframework/zendframework": "~2.4",
-    "zendframework/zend-inputfilter": "~2.4",
-    "zendframework/zend-i18n": "~2.4",
-    "zendframework/zend-servicemanager": "~2.4",
-    "zendframework/zend-modulemanager": "~2.4",
-    "zendframework/zend-http": "~2.4",
-    "zendframework/zend-json": "~2.4"
+    "zendframework/zendframework": "~2.5",
+    "zendframework/zend-inputfilter": "~2.6",
+    "zendframework/zend-i18n": "~2.6",
+    "zendframework/zend-servicemanager": "~2.5",
+    "zendframework/zend-modulemanager": "~2.7",
+    "zendframework/zend-http": "~2.5",
+    "zendframework/zend-json": "~2.6"
   },
   "require-dev": {
     "fabpot/php-cs-fixer": "1.7.*",

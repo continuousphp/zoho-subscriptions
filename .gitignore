@@ -1,6 +1,7 @@
 # Composer files
 vendor/
 composer.lock
+composer.phar
 
 # IDE
 .idea
