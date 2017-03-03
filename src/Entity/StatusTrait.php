@@ -14,16 +14,16 @@ namespace Zoho\Subscriptions\Entity;
 trait StatusTrait
 {
     /**
-     * Status of the item. It can either be active or inactive.
+     * Status of the item.
      *
-     * @var boolean
+     * @var string
      */
     protected $status;
 
     /**
      * Get the status
      *
-     * @return boolean
+     * @return string
      */
     public function getStatus()
     {
@@ -33,12 +33,12 @@ trait StatusTrait
     /**
      * Set the status
      *
-     * @param boolean $status
+     * @param string $status
      * @return StatusTrait
      */
     public function setStatus($status)
     {
-        $this->status = (bool)$status;
+        $this->status = $status;
         return $this;
     }
 
