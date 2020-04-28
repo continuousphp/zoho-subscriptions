@@ -47,6 +47,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
 
         if (!isset($config['resources']) || !is_array($config['resources'])) {
             $this->lookupCache[$requestedName] = false;
+            throw new \Exception('No resources found');
             return false;
         }
 
@@ -57,6 +58,7 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
             || !isset($config[$requestedName]['input-filter'])
         ) {
             $this->lookupCache[$requestedName] = false;
+            throw new \Exception('No config found for ' . $requestedName);
             return false;
         }
 
@@ -92,39 +94,43 @@ class ResourceAbstractFactory implements AbstractFactoryInterface
      */
     public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName)
     {
-        $config = $serviceLocator->get('Config');
-        $zohoConfig = $config['zoho'];
-        $resourceConfig = $config['zoho']['resources'][$requestedName];
-
-        $resource = new Resource($zohoConfig['auth_token'], $zohoConfig['organization_id']);
-        $resource->setPath($resourceConfig['path']);
-        $resource->setCollectionName($resourceConfig['collectionName']);
-
-        $entityClass = array_key_exists('entityClass', $resourceConfig) ?
-            $resourceConfig['entityClass']:
-            str_replace('Resource', 'Entity', $requestedName);
-
-        $resource->setEntityClass($entityClass);
-        $resource->setEntityName($resourceConfig['entityName']);
-
-        if (isset($resourceConfig['input-filter']) && is_array($resourceConfig['input-filter'])) {
-            $inputFilterFactory = new InputFilterFactory();
-            $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);
-            $resource->setInputFilter($inputFilter);
+        try {
+            $config = $serviceLocator->get('Config');
+            $zohoConfig = $config['zoho'];
+            $resourceConfig = $config['zoho']['resources'][$requestedName];
+    
+            $resource = new Resource($zohoConfig['auth_token'], $zohoConfig['organization_id']);
+            $resource->setPath($resourceConfig['path']);
+            $resource->setCollectionName($resourceConfig['collectionName']);
+    
+            $entityClass = array_key_exists('entityClass', $resourceConfig) ?
+                $resourceConfig['entityClass']:
+                str_replace('Resource', 'Entity', $requestedName);
+    
+            $resource->setEntityClass($entityClass);
+            $resource->setEntityName($resourceConfig['entityName']);
+    
+            if (isset($resourceConfig['input-filter']) && is_array($resourceConfig['input-filter'])) {
+                $inputFilterFactory = new InputFilterFactory();
+                $inputFilter = $inputFilterFactory->createInputFilter($resourceConfig['input-filter']);
+                $resource->setInputFilter($inputFilter);
+            }
+    
+            $hydratorManager = $serviceLocator->get('HydratorManager');
+    
+            $hydratorName = str_replace('Entity', 'Hydrator', $entityClass);
+    
+            if ($hydratorManager->has($hydratorName)) {
+                $hydrator = $hydratorManager->get($hydratorName);
+            } else {
+                $hydrator = new ClassMethods();
+            }
+    
+            $resource->setHydrator($hydrator);
+        } catch(\Exception $e) {
+            
+            throw new Exception($e->getTraceAsString());
         }
-
-        $hydratorManager = $serviceLocator->get('HydratorManager');
-
-        $hydratorName = str_replace('Entity', 'Hydrator', $entityClass);
-
-        if ($hydratorManager->has($hydratorName)) {
-            $hydrator = $hydratorManager->get($hydratorName);
-        } else {
-            $hydrator = new ClassMethods();
-        }
-
-        $resource->setHydrator($hydrator);
-
         return $resource;
     }
 }
